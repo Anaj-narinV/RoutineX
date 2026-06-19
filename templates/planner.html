@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RoutineX Planner</title>
+
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#6c5ce7">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <div class="header-card">
+
+        <div>
+
+            <h1>
+                📅 Planner & Deadlines
+            </h1>
+
+            <p>
+                Assignment • Exam • Project Tracking
+            </p>
+
+        </div>
+
+        <nav class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/planner" class="active">Planner</a>
+            <a href="/analytics">Analytics</a>
+        </nav>
+
+        <a href="/dashboard"
+           class="planner-btn">
+
+            Dashboard
+
+        </a>
+
+    </div>
+
+    <!-- ===================== -->
+    <!-- ADD TASK -->
+    <!-- ===================== -->
+
+    <div class="card">
+
+        <h2>
+            ➕ Add New Task
+        </h2>
+
+        <form action="/add-task"
+              method="POST">
+
+            <input
+                type="text"
+                name="task_name"
+                placeholder="Task Name"
+                required>
+
+            <br><br>
+
+            <select name="task_type"
+                    required>
+
+                <option value="">
+                    Task Type
+                </option>
+
+                <option>
+                    Assignment
+                </option>
+
+                <option>
+                    Exam
+                </option>
+
+                <option>
+                    Project
+                </option>
+
+                <option>
+                    Personal
+                </option>
+
+            </select>
+
+            <br><br>
+
+            <label>
+                Submission Date
+            </label>
+
+            <input
+                type="date"
+                name="submission_date"
+                required>
+
+            <br><br>
+
+            <label>
+                Target Completion Date
+            </label>
+
+            <input
+                type="date"
+                name="target_date"
+                required>
+
+            <br><br>
+
+            <select name="priority"
+                    required>
+
+                <option value="">
+                    Priority
+                </option>
+
+                <option>
+                    Low
+                </option>
+
+                <option>
+                    Medium
+                </option>
+
+                <option>
+                    High
+                </option>
+
+            </select>
+
+            <br><br>
+
+            <button class="save-btn">
+
+                Save Task
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- ===================== -->
+    <!-- TASK LIST -->
+    <!-- ===================== -->
+
+    <div class="card">
+
+        <h2>
+            📌 Saved Tasks
+        </h2>
+
+        {% if tasks %}
+
+            {% for task in tasks %}
+
+                <div class="task-card">
+
+                    <h4>
+                        {{ task.task_name }}
+                    </h4>
+
+                    <p>
+                        Type:
+                        {{ task.task_type }}
+                    </p>
+
+                    <p>
+                        Submission:
+                        {{ task.submission_date }}
+                    </p>
+
+                    <p>
+                        Target:
+                        {{ task.target_date }}
+                    </p>
+
+                    <p>
+                        Priority:
+                        {{ task.priority }}
+                    </p>
+
+                    <p>
+                        Status:
+                        {{ task.status }}
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty-task">
+
+                No tasks added yet.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

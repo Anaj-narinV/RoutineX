@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoutineX - Offline</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="dashboard">
+    <div class="card glass-card" style="text-align:center; padding:60px;">
+      <h1 style="font-size:2.5rem;">📡 You're Offline</h1>
+      <p style="margin-top:16px;">
+        RoutineX can't reach the server right now. Anything you've already
+        opened will keep working from cache, and your drafts are saved locally.
+      </p>
+      <br>
+      <a href="/dashboard" class="planner-btn">Try Again</a>
+    </div>
+  </div>
+</body>
+</html>

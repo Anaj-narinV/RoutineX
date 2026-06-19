@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RoutineX</title>
+
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#05050a">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/landing.css') }}">
+
+</head>
+
+<body class="landing">
+
+    <div class="landing-bg"></div>
+    <div class="grid-overlay"></div>
+    <div class="noise-overlay"></div>
+
+    <div class="hero-wrap">
+
+        <div class="hero-card">
+
+            <span class="badge-pill">
+                <span class="badge-dot"></span>
+                Personal Life Operating System
+            </span>
+
+            <h1 class="hero-title">
+                RoutineX
+            </h1>
+
+            <p class="hero-tagline">
+                Track <span>•</span> Analyze <span>•</span> Improve
+            </p>
+
+            <p class="hero-desc">
+                A premium habit, study and routine tracker —
+                built to keep your streaks alive and your
+                days intentional.
+            </p>
+
+            <div class="hero-actions">
+
+                <a href="/dashboard" class="landing-btn primary">
+                    Start Tracking
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="/planner" class="landing-btn secondary">
+                    Open Planner
+                </a>
+
+            </div>
+
+            <div class="hero-actions" style="margin-top:14px;">
+
+                <a href="/analytics" class="landing-btn secondary">
+                    View Analytics
+                    <span class="arrow">→</span>
+                </a>
+
+            </div>
+
+            <div class="feature-strip">
+
+                <div class="feature-chip">
+                    <span class="icon">🔥</span>
+                    <span class="label">Streaks</span>
+                </div>
+
+                <div class="feature-chip">
+                    <span class="icon">📊</span>
+                    <span class="label">Analytics</span>
+                </div>
+
+                <div class="feature-chip">
+                    <span class="icon">📱</span>
+                    <span class="label">Installable</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("/sw.js").catch(function () {});
+        }
+    </script>
+
+</body>
+</html>

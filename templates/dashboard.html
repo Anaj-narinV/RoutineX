@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RoutineX Dashboard</title>
+
+    <link rel="manifest"
+          href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#6c5ce7">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+    <script defer
+            src="{{ url_for('static',
+            filename='js/script.js') }}">
+    </script>
+
+</head>
+
+<body data-draft-json="{{ draft_json | e }}">
+
+<div class="dashboard">
+
+    <div class="header-card">
+
+        <div>
+
+            <h1>RoutineX</h1>
+
+            <p>
+                Personal Life Operating System
+            </p>
+
+        </div>
+
+        <nav class="nav-links">
+            <a href="/dashboard" class="active">Dashboard</a>
+            <a href="/planner">Planner</a>
+            <a href="/analytics">Analytics</a>
+        </nav>
+
+        <div class="streak-pill compact">
+            <span class="streak-emoji">🔥</span>
+            <div>
+                <h2>{{ current_streak }}</h2>
+                <p>Streak</p>
+            </div>
+        </div>
+
+        <div class="date-card">
+
+            <h3>{{ today }}</h3>
+
+            <span>{{ day_name }}</span>
+
+        </div>
+
+    </div>
+
+    <div class="card draft-banner" id="draft-banner" style="display:none;">
+        <p>📝 Restored your unsaved draft from earlier today. Keep filling in and hit Save Today when ready.</p>
+    </div>
+
+    <form action="/save"
+          method="POST"
+          id="daily-log-form">
+
+        <!-- ===================== -->
+        <!-- DAY INFORMATION -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                📅 Day Information
+            </h2>
+
+            <div class="grid-2">
+
+                <select name="status"
+                        id="status">
+
+                    <option value="">
+                        Select Status
+                    </option>
+
+                    <option value="Home">
+                        Home
+                    </option>
+
+                    <option value="College">
+                        College
+                    </option>
+
+                    <option value="Outing">
+                        Outing
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div id="outing-box"
+                 style="display:none;">
+
+                <label>
+
+                    <input type="checkbox"
+                           name="full_day_outing"
+                           id="full_day_outing">
+
+                    Full Day Outing
+
+                </label>
+
+            </div>
+
+        </div>
+
+        <!-- ===================== -->
+        <!-- MORNING ROUTINE -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                🌅 Morning Routine
+            </h2>
+
+            <div class="grid-2">
+
+                <input type="time"
+                       name="wake_up_time">
+
+                <select name="drink_type">
+
+                    <option value="">
+                        Morning Drink
+                    </option>
+
+                    <option>
+                        Flaxseed Drink
+                    </option>
+
+                    <option>
+                        Mint Juice
+                    </option>
+
+                    <option>
+                        Blue Tea
+                    </option>
+
+                    <option>
+                        Guava Tea
+                    </option>
+
+                    <option>
+                        None
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="checkbox-group">
+
+                <label>
+                    <input type="checkbox"
+                           name="brush">
+                    Brush
+                </label>
+
+                <label>
+                    <input type="checkbox"
+                           name="oil_pulling">
+                    Oil Pulling
+                </label>
+
+                <label>
+                    <input type="checkbox"
+                           name="almonds">
+                    5 Almonds
+                </label>
+
+            </div>
+
+            <br>
+
+            <select name="bath_type">
+
+                <option value="">
+                    Bath Type
+                </option>
+
+                <option>
+                    Curd + Turmeric Mask
+                </option>
+
+                <option>
+                    Only Soap
+                </option>
+
+            </select>
+
+        </div>
+         <!-- ===================== -->
+        <!-- SKIN CARE -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                🧴 Morning Skin Care
+            </h2>
+
+            <div class="checkbox-group">
+
+                <label>
+                    <input type="checkbox"
+                           name="face_wash_morning">
+                    Face Wash
+                </label>
+
+                <label>
+                    <input type="checkbox"
+                           name="ice_cube">
+                    Ice Cube
+                </label>
+
+            </div>
+
+            <br>
+
+            <div id="outside-skin-box">
+
+                <div class="checkbox-group">
+
+                    <label>
+                        <input type="checkbox"
+                               name="sunscreen_morning">
+                        Sunscreen
+                    </label>
+
+                    <label>
+                        <input type="checkbox"
+                               name="cc_cream">
+                        CC Cream
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- HAIR CARE -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                💇 Hair Care
+            </h2>
+
+            <label>
+
+                <input type="checkbox"
+                       id="hair_wash"
+                       name="hair_wash">
+
+                Hair Wash Today
+
+            </label>
+
+            <br><br>
+
+            <select name="hair_care_type"
+                    id="hair_care_type">
+
+                <option value="">
+                    Select Hair Care
+                </option>
+
+                <option value="Only Hair Wash">
+                    Only Hair Wash
+                </option>
+
+                <option value="Flaxseed Mask">
+                    Flaxseed Mask
+                </option>
+
+                <option value="Coconut Milk Mask">
+                    Coconut Milk Mask
+                </option>
+
+                <option value="Oil Applied">
+                    Oil Applied
+                </option>
+
+                <option value="Rosemary Water">
+                    Rosemary Water
+                </option>
+
+                <option value="Nothing Applied">
+                    Nothing Applied
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- MORNING STUDY -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                📚 Morning Study
+            </h2>
+
+            <label>
+
+                <input type="checkbox"
+                       id="morning_study_toggle">
+
+                Studied In Morning
+
+            </label>
+
+            <div id="morning-study-box">
+
+                <br>
+
+                <button type="button"
+                        class="add-btn"
+                        onclick="addMorningStudy()">
+
+                    + Add Study Entry
+
+                </button>
+
+                <div id="morning-study-container">
+
+                    <div class="study-row">
+
+                        <input type="hidden"
+                               name="session[]"
+                               value="Morning">
+
+                        <input type="text"
+                               name="subject[]"
+                               placeholder="Subject">
+
+                        <input type="text"
+                               name="topic[]"
+                               placeholder="Topic">
+
+                        <input type="time"
+                               name="start_time[]">
+
+                        <input type="time"
+                               name="end_time[]">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- BREAKFAST -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                🍽 Breakfast
+            </h2>
+
+            <textarea
+                name="breakfast"
+                rows="3"
+                placeholder="What did you eat for breakfast?">
+            </textarea>
+
+        </div>
+        <!-- ===================== -->
+        <!-- AFTERNOON SECTION -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                🌞 Afternoon Checkpoint
+            </h2>
+
+            <p class="section-info">
+                Lunch, snack and afternoon care
+            </p>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- LUNCH -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                🍱 Lunch
+            </h2>
+
+            <textarea
+                name="lunch"
+                rows="3"
+                placeholder="What did you eat for lunch?">
+            </textarea>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- AFTERNOON SUNSCREEN -->
+        <!-- ===================== -->
+
+        <div class="card"
+             id="afternoon-sunscreen-card">
+
+            <h2>
+                ☀ Afternoon Protection
+            </h2>
+
+            <label>
+
+                <input type="checkbox"
+                       name="sunscreen_afternoon">
+
+                Reapplied Sunscreen
+
+            </label>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- SNACK TRACKER -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                🥜 Evening Snack
+            </h2>
+
+            <select
+                name="snack_type"
+                id="snack_type">
+
+                <option value="">
+                    Select Snack
+                </option>
+
+                <option value="Konda Kadalai">
+                    Konda Kadalai
+                </option>
+
+                <option value="Pachapayir">
+                    Pachapayir
+                </option>
+
+                <option value="Kadalaparuppu">
+                    Kadalaparuppu
+                </option>
+
+                <option value="Other">
+                    Other
+                </option>
+
+                <option value="None">
+                    None
+                </option>
+
+            </select>
+
+            <br><br>
+
+            <div id="other-snack-box">
+
+                <input
+                    type="text"
+                    name="snack_other"
+                    placeholder="Enter snack name">
+
+            </div>
+
+        </div>
+
+<!-- ===================== -->
+        <!-- TOMORROW PREPARATION -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                📋 Tomorrow Preparation
+            </h2>
+
+            <p class="section-info">
+                Prepare everything needed for tomorrow
+            </p>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- SOAKING ITEMS -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                🌱 Soaking Checklist
+            </h2>
+
+            <div class="checkbox-group">
+
+                <label>
+                    <input type="checkbox"
+                           name="soak_almonds">
+                    Almonds
+                </label>
+
+                <label>
+                    <input type="checkbox"
+                           name="soak_badam_pisin">
+                    Badam Pisin
+                </label>
+
+                <label>
+                    <input type="checkbox"
+                           name="soak_konda_kadalai">
+                    Konda Kadalai
+                </label>
+
+                <label>
+                    <input type="checkbox"
+                           name="soak_kadalaparuppu">
+                    Kadalaparuppu
+                </label>
+
+                <label>
+                    <input type="checkbox"
+                           name="soak_pachapayir">
+                    Pachapayir
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- FOOD AVAILABILITY -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                🍳 Tomorrow Food Check
+            </h2>
+
+            <div class="checkbox-group">
+
+                <label>
+                    <input type="checkbox"
+                           name="eggs_available">
+                    Eggs Available
+                </label>
+
+                <label>
+                    <input type="checkbox"
+                           name="paneer_available">
+                    Paneer Available
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- COLLEGE CHECK -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                🏫 Tomorrow Plan
+            </h2>
+
+            <label>
+
+                <input type="checkbox"
+                       id="college_tomorrow"
+                       name="college_tomorrow">
+
+                College Tomorrow
+
+            </label>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- COLLEGE PREPARATION -->
+        <!-- ===================== -->
+
+        <div class="card"
+             id="college-preparation-box">
+
+            <h2>
+                🎒 College Preparation
+            </h2>
+
+            <div class="checkbox-group">
+
+                <label>
+
+                    <input type="checkbox"
+                           name="bag_packed">
+
+                    Bag Packed
+
+                </label>
+
+                <label>
+
+                    <input type="checkbox"
+                           name="dress_ironed">
+
+                    Dress Ironed
+
+                </label>
+
+            </div>
+
+        </div>
+                <!-- ===================== -->
+        <!-- DAILY JOURNAL -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                📔 Daily Journal
+            </h2>
+
+            <p class="section-info">
+                Track your mood, thoughts and extra activities
+            </p>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- MOOD TRACKER -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                😊 Mood Tracker
+            </h2>
+
+            <select name="mood">
+
+                <option value="">
+                    Select Mood
+                </option>
+
+                <option value="Happy">
+                    😄 Happy
+                </option>
+
+                <option value="Good">
+                    🙂 Good
+                </option>
+
+                <option value="Normal">
+                    😐 Normal
+                </option>
+
+                <option value="Sad">
+                    😔 Sad
+                </option>
+
+                <option value="Stressed">
+                    😫 Stressed
+                </option>
+
+                <option value="Tired">
+                    😴 Tired
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- EXTRA WORKS -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                ⚡ Extra Works
+            </h2>
+
+            <textarea
+                name="journal"
+                rows="10"
+                placeholder="Examples:
+
+• Drawing pannen
+
+• Assignment work pannen
+
+• Project work pannen
+
+• Friend kooda pesinen
+
+• Veliya ponen
+
+• Extra study pannen
+
+• Today was productive
+
+• Any personal notes...
+"></textarea>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- DAILY REFLECTION -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                🌟 Today's Reflection
+            </h2>
+
+            <div class="reflection-box">
+
+                <p>
+                    Use this section to record:
+                </p>
+
+                <ul>
+
+                    <li>
+                        What went well today
+                    </li>
+
+                    <li>
+                        What needs improvement
+                    </li>
+
+                    <li>
+                        Productivity highlights
+                    </li>
+
+                    <li>
+                        Health & self-care notes
+                    </li>
+
+                    <li>
+                        Personal achievements
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+                <!-- ===================== -->
+        <!-- UPCOMING TASKS -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                📌 Upcoming Tasks
+            </h2>
+
+            <p class="section-info">
+                Showing tasks due within the next 10 days
+            </p>
+
+            <div id="upcoming-tasks-container">
+
+                <div class="empty-task">
+
+                    No upcoming tasks found.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- QUICK PLANNER ACCESS -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                📅 Planner & Deadlines
+            </h2>
+
+            <p>
+                Manage assignments, exams,
+                projects and personal goals.
+            </p>
+
+            <a href="/planner"
+               class="planner-btn">
+
+                Open Planner
+
+            </a>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- DAILY PROGRESS CARD -->
+        <!-- ===================== -->
+
+        <div class="card">
+
+            <h2>
+                🎯 Daily Progress
+            </h2>
+
+            <div class="progress-grid">
+
+                <div class="progress-item">
+
+                    <h3>
+                        📚 Study
+                    </h3>
+
+                    <p>
+                        Morning + Night Sessions
+                    </p>
+
+                </div>
+
+                <div class="progress-item">
+
+                    <h3>
+                        🍽 Food
+                    </h3>
+
+                    <p>
+                        Breakfast, Lunch & Dinner
+                    </p>
+
+                </div>
+
+                <div class="progress-item">
+
+                    <h3>
+                        🧴 Self Care
+                    </h3>
+
+                    <p>
+                        Skin + Hair Care
+                    </p>
+
+                </div>
+
+                <div class="progress-item">
+
+                    <h3>
+                        💧 Hydration
+                    </h3>
+
+                    <p>
+                        Water & Infused Water
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================== -->
+        <!-- MOTIVATION CARD -->
+        <!-- ===================== -->
+
+        <div class="card motivation-card">
+
+            <h2>
+                🌸 RoutineX Reminder
+            </h2>
+
+            <p>
+
+                Small consistent actions
+                create big results.
+
+                Track honestly,
+                improve gradually,
+                and focus on progress
+                rather than perfection.
+
+            </p>
+
+        </div>
+                <!-- ===================== -->
+        <!-- SAVE SECTION -->
+        <!-- ===================== -->
+
+        <div class="card save-card">
+
+            <h2>
+                💾 Save Today's Progress
+            </h2>
+
+            <p>
+                You can save multiple times during the day.
+                Morning → Afternoon → Night updates will overwrite
+                the same day's record instead of creating duplicates.
+            </p>
+
+            <button type="submit"
+                    class="save-btn">
+
+                Save Today
+
+            </button>
+
+            <div class="export-buttons">
+                <a class="save-btn alt" href="/export/json">Export JSON</a>
+                <a class="save-btn alt" href="/export/csv">Export CSV</a>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

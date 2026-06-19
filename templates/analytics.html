@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RoutineX Analytics</title>
+
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#6c5ce7">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+
+</head>
+<body>
+
+<div class="dashboard">
+
+    <div class="header-card">
+        <div>
+            <h1>📊 Analytics</h1>
+            <p>Weekly &amp; Monthly Performance</p>
+        </div>
+        <nav class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/planner">Planner</a>
+            <a href="/analytics" class="active">Analytics</a>
+        </nav>
+    </div>
+
+    <div class="card streak-row">
+        <div class="streak-pill">
+            <span class="streak-emoji">🔥</span>
+            <div>
+                <h2 id="current-streak">{{ current_streak }}</h2>
+                <p>Current Streak</p>
+            </div>
+        </div>
+        <div class="streak-pill best">
+            <span class="streak-emoji">🏆</span>
+            <div>
+                <h2 id="best-streak">{{ best_streak }}</h2>
+                <p>Best Streak</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card glass-card">
+        <h2>📅 Weekly Summary</h2>
+        <div class="stat-grid" id="weekly-stats">
+            <div class="stat-box">
+                <h3 id="week-completion">--%</h3>
+                <p>Completion Rate</p>
+            </div>
+            <div class="stat-box">
+                <h3 id="week-days">--</h3>
+                <p>Days Logged / 7</p>
+            </div>
+            <div class="stat-box">
+                <h3 id="week-water">-- L</h3>
+                <p>Avg Water Intake</p>
+            </div>
+        </div>
+
+        <div class="week-strip" id="week-strip"></div>
+    </div>
+
+    <div class="card glass-card">
+        <h2>🗓️ Monthly Performance</h2>
+        <div class="stat-grid" id="monthly-stats">
+            <div class="stat-box">
+                <h3 id="month-completion">--%</h3>
+                <p>Completion Rate</p>
+            </div>
+            <div class="stat-box">
+                <h3 id="month-days">--</h3>
+                <p>Days Logged / 30</p>
+            </div>
+            <div class="stat-box">
+                <h3 id="month-study">--</h3>
+                <p>Study Sessions</p>
+            </div>
+            <div class="stat-box">
+                <h3 id="month-mood">--</h3>
+                <p>Top Mood</p>
+            </div>
+        </div>
+
+        <canvas id="monthlyChart" height="120"></canvas>
+    </div>
+
+    <div class="card glass-card export-card">
+        <h2>⬇️ Export Backup</h2>
+        <p>Download a full copy of your RoutineX data anytime.</p>
+        <div class="export-buttons">
+            <a class="save-btn" href="/export/json">Export JSON</a>
+            <a class="save-btn alt" href="/export/csv">Export CSV</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+async function loadWeekly() {
+    const res = await fetch("/api/weekly-summary");
+    const data = await res.json();
+
+    document.getElementById("week-completion").textContent = data.completion_rate + "%";
+    document.getElementById("week-days").textContent = data.completed_days + " / 7";
+    document.getElementById("week-water").textContent = data.average_water_intake + " L";
+
+    const strip = document.getElementById("week-strip");
+    strip.innerHTML = "";
+
+    data.daily_breakdown.forEach(day => {
+        const el = document.createElement("div");
+        el.className = "day-chip" + (day.logged ? " done" : "");
+        el.innerHTML = `<span>${day.day_name.slice(0,3)}</span>`;
+        strip.appendChild(el);
+    });
+}
+
+async function loadMonthly() {
+    const res = await fetch("/api/monthly-summary");
+    const data = await res.json();
+
+    document.getElementById("month-completion").textContent = data.completion_rate + "%";
+    document.getElementById("month-days").textContent = data.tracked_days + " / 30";
+    document.getElementById("month-study").textContent = data.study_entries;
+    document.getElementById("month-mood").textContent = data.top_mood || "—";
+
+    const labels = data.chart_data.map(d => d.date.slice(5));
+    const values = data.chart_data.map(d => d.completed);
+
+    new Chart(document.getElementById("monthlyChart"), {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Logged",
+                data: values,
+                backgroundColor: "#6c5ce7",
+                borderRadius: 4
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true, max: 1, ticks: { stepSize: 1 } }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+}
+
+loadWeekly();
+loadMonthly();
+
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+}
+</script>
+
+</body>
+</html>
