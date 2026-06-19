@@ -22,19 +22,3 @@
       "purpose": "any maskable"
     }
   ],
-
-  "screenshots": [
-    {
-      "src": "/static/screenshots/mobile.png",
-      "sizes": "540x720",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/static/screenshots/desktop.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide"
-    }
-  ]
-}
