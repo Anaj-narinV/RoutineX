@@ -1,18 +1,17 @@
-// =========================
-// ROUTINEX SERVICE WORKER
-// =========================
-const CACHE_NAME = "routinex-v1";
+const CACHE_NAME = "routinex-v2";
 
-// Only cache basic static files
 const urlsToCache = [
   "/",
   "/dashboard",
+  "/planner",
+  "/analytics",
   "/static/css/style.css",
   "/static/js/app.js"
 ];
 
-// Install
+// INSTALL
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(urlsToCache);
@@ -20,17 +19,8 @@ self.addEventListener("install", (event) => {
   );
 });
 
-// Fetch (network first → fallback cache)
-self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        return response;
-      })
-      .catch(() => {
-        return caches.match(event.request);
-      })
-    self.addEventListener("activate", (event) => {
+// ACTIVATE (clear old cache)
+self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
@@ -42,6 +32,18 @@ self.addEventListener("fetch", (event) => {
       );
     })
   );
+  self.clients.claim();
 });
+
+// FETCH (network first, fallback cache)
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    fetch(event.request)
+      .then((response) => {
+        return response;
+      })
+      .catch(() => {
+        return caches.match(event.request);
+      })
   );
 });
