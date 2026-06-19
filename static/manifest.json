@@ -1,5 +1,5 @@
 {
-  "name": "RoutineX - Personal Life Operating System",
+  "name": "RoutineX - Customised personal Tracking system",
   "short_name": "RoutineX",
   "description": "Track habits, study sessions, streaks, and analytics in one premium dashboard.",
   "start_url": "/dashboard",
@@ -11,15 +11,15 @@
   "icons": [
     {
       "src": "/static/icons/icon-192.png",
-      "sizes": "192x192",
+      "sizes": "618×615",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/static/icons/icon-512.png",
-      "sizes": "512x512",
+      "sizes": "1024×1024",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
