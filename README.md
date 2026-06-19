@@ -32,6 +32,17 @@ This project serves as my personal dashboard for tracking progress, maintaining 
 * Charts: Chart.js
 * PWA: Service Worker + Web App Manifest
 
+## 📲 Install App (PWA)
+
+RoutineX can be installed like a mobile or desktop app:
+
+### 📱 Mobile (Chrome)
+Open site → https://routinex-0282.onrender.com  
+Menu (⋮) → Add to Home Screen → Install
+
+### 💻 Desktop (Chrome/Edge)
+Open site → Click Install icon in address bar → Install RoutineX
+
 ## Live Demo
 
 https://routinex-0282.onrender.com
