@@ -5,8 +5,7 @@ const urlsToCache = [
   "/dashboard",
   "/planner",
   "/analytics",
-  "/static/css/style.css",
-  "/static/js/app.js"
+  "/static/css/style.css"
 ];
 
 // INSTALL
