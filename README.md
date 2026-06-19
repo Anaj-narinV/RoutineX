@@ -47,6 +47,9 @@ RoutineX/
     ├── analytics.html       # Weekly/monthly analytics
     └── offline.html         # PWA offline fallback page
 ```
+
+## Live link: https://routinex-0282.onrender.com
+
 ## Author
 
 Built and maintained by Niranjana.
