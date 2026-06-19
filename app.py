@@ -8,7 +8,11 @@ from datetime import date, datetime, timedelta
 app = Flask(__name__)
 
 DB_NAME = "database.db"
+from flask import send_from_directory
 
+@app.route('/static/icons/<path:filename>')
+def icons(filename):
+    return send_from_directory('static/icons', filename)
 
 # =========================
 # DATABASE CONNECTION
